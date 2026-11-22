@@ -1,29 +1,36 @@
-# PrimeTrack — Trading Journal
+# PrimeTrack — Cloud Trading Journal
 
-A responsive, browser-based journal for a $5,000 SharkFunded Prime Instant simulated account.
+Responsive light-theme trading journal using Supabase Auth, PostgreSQL and private screenshot storage.
 
-## Run locally
-Open `index.html` in a modern browser. No build step or dependencies are required.
+## Included
+- Email/password sign-in and per-user cloud data isolation.
+- Multiple trading account profiles with configurable drawdown, floating cap, reward split, qualifying days, consistency and personal stop.
+- Trade journal: symbol, side, lot, entry/exit, SL/TP, gross P&L, costs, setup, session, emotion, grade, risk, R multiple, notes and image.
+- Cloud-backed trade history, search/filter, delete, CSV import/export and JSON backup.
+- Dashboard, equity curve, win rate, profit factor, expectancy, max closed-trade drawdown and breakdowns by symbol/setup/session/weekday.
+- Risk monitor, qualifying-day tracker, payout estimate, manual news calendar and discipline checklists.
+- Mobile-responsive light interface.
 
-## Features
-- Account balance and net P/L tracking from closed trades.
-- XAUUSD pip-value calculator using the configured convention (default: $10 per pip at 1.00 lot; therefore 0.01 lot = $0.10/pip).
-- Planned TP/SL outcome estimates and risk percentage.
-- Manual gross P/L entry to match MT5, with commission and swap costs.
-- One logged trade per calendar day by default.
-- Seven qualifying-day tracker, 15% largest-winning-trade consistency check and estimated 80% reward share.
-- Daily drawdown, maximum drawdown and floating-loss rule reference.
-- Search-free trade history, CSV export, JSON backup and restore.
-- Browser localStorage persistence.
+## Supabase setup
+1. Create a project at https://supabase.com/.
+2. Run the complete SQL in `supabase/schema.sql` in Supabase SQL Editor.
+3. Copy `config.example.js` to `config.js`.
+4. In Project Settings → API, copy Project URL and anon/public key into config.js.
+5. Enable Email in Authentication → Providers.
+6. Deploy repository root with GitHub Pages (Settings → Pages → Deploy from branch → main or your deployment branch → /(root)).
+7. Add your deployed URL under Authentication → URL Configuration → Redirect URLs.
+8. Open the site and create your account.
 
-## Publish with GitHub Pages
-1. Open the repository **Settings → Pages**.
-2. Under **Build and deployment**, choose **Deploy from a branch**.
-3. Select branch **main** and folder **/(root)**, then Save.
-4. Wait for GitHub Pages to publish. The site URL will be shown on the Pages settings screen.
+Never use the service_role key in frontend code. The browser uses only the anon/public key. Keep config.js private if desired.
 
-## Data storage and privacy
-The app stores trade history and settings in the browser's localStorage on the device/browser where it is used. GitHub Pages hosts only the static app files; it does **not** sync private journal entries between devices or browsers. Export a JSON backup regularly and keep it somewhere safe. Do not enter MT5 passwords or account credentials.
+## Existing local data / migration
+The previous release used browser localStorage. Before replacing it, export a JSON backup from that browser and keep it safe. Cloud mode does not automatically read old browser storage. The new version supports CSV trade import; use the old version's CSV export for migration. Do not clear browser site data before securing backups.
 
-## Important
-This is a personal tracking tool, not an official SharkFunded product, financial advice, broker integration, or guarantee of payout eligibility. Rules shown in the app are configurable reference values and must be checked against the firm's current account terms. It cannot read live MT5 equity, open positions or floating loss.
+## Important limits
+- XAUUSD pip calculator convention supplied by the owner: $10/pip at 1.00 lot, so 0.01 lot = $0.10/pip. Verify contract specs with your broker.
+- Analytics use entered closed trades and costs. No MT5 connection, live equity/floating loss, automated news feed, order execution, or guaranteed payout eligibility.
+- Account rules are editable references; confirm current prop-firm rules independently.
+- Screenshot uploads use a private Supabase Storage bucket.
+
+## Repository
+https://github.com/harshtakalkar037-boop/trading_journal-
